@@ -1,8 +1,8 @@
-FROM nvidia/cuda:11.1-base
+FROM nvidia/cuda:11.8.0-base-ubuntu20.04
 RUN apt update\
   && apt install -y python3 python3-pip wget git zstd curl\
   && DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt install -y nvidia-cuda-toolkit
-RUN wget -c https://the-eye.eu/public/AI/GPT-J-6B/step_383500_slim.tar.zstd  --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 0  \
+RUN wget --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 0 -c https://the-eye.eu/public/AI/GPT-J-6B/step_383500_slim.tar.zstd\
   && tar -I zstd -xf step_383500_slim.tar.zstd\
   && rm step_383500_slim.tar.zstd
 RUN git clone https://github.com/kingoflolz/mesh-transformer-jax.git
@@ -13,6 +13,7 @@ RUN mkdir gpt-j-6B &&\
 COPY converttotorch.py ./
 RUN python3 converttotorch.py
 RUN pip3 install fastapi pydantic uvicorn && pip3 install numpy --upgrade && pip3 install git+https://github.com/finetuneanon/transformers@gpt-j
+RUN pip3 install protobuf==3.20.* && pip3 install numpy==1.23.4
 COPY web.py ./
 COPY model.py ./
 CMD uvicorn web:app --port 8080 --host 0.0.0.0
