@@ -9,7 +9,7 @@ RUN git clone https://github.com/kingoflolz/mesh-transformer-jax.git
 RUN pip3 install -r mesh-transformer-jax/requirements.txt
 RUN pip3 install torch mesh-transformer-jax/ jax==0.2.12 jaxlib==0.1.68 -f https://storage.googleapis.com/jax-releases/jax_releases.html
 RUN mkdir gpt-j-6B &&\
-  curl https://github.com/jokersoft/helper/blob/main/gpt-j-6B/config.json > gpt-j-6B/config.json
+  curl https://raw.githubusercontent.com/jokersoft/helper/main/gpt-j-6B/config.json > gpt-j-6B/config.json
 COPY converttotorch.py ./
 RUN python3 converttotorch.py
 RUN pip3 install fastapi pydantic uvicorn && pip3 install numpy --upgrade && pip3 install git+https://github.com/finetuneanon/transformers@gpt-j
